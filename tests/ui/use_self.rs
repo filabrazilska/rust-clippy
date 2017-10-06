@@ -26,6 +26,42 @@ mod use_self {
     }
 }
 
+mod internal_macro_fails {
+    macro_rules! expand_wrong_functions {
+        () => (
+            fn new() -> FooWrong {
+                FooWrong {}
+            }
+            fn test() -> FooWrong {
+                FooWrong::new()
+            }
+        )
+    }
+
+    macro_rules! expand_better_functions {
+        () => (
+            fn new() -> Self {
+                Self {}
+            }
+            fn test() -> Self {
+                Self::new()
+            }
+        )
+    }
+
+    struct FooWrong {}
+
+    impl FooWrong {
+        expand_wrong_functions!();
+    }
+
+    struct FooBetter {}
+
+    impl FooBetter {
+        expand_better_functions!();
+    }
+}
+
 mod better {
     struct Foo {}
 

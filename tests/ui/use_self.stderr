@@ -36,3 +36,39 @@ error: unnecessary structure name repetition
 24 |             Foo::new()
    |             ^^^^^^^^ help: use the applicable keyword: `Self`
 
+error: unnecessary structure name repetition
+  --> $DIR/use_self.rs:32:25
+   |
+32 |             fn new() -> FooWrong {
+   |                         ^^^^^^^^ help: use the applicable keyword: `Self`
+...
+55 |         expand_wrong_functions!();
+   |         -------------------------- in this macro invocation
+
+error: unnecessary structure name repetition
+  --> $DIR/use_self.rs:33:17
+   |
+33 |                 FooWrong {}
+   |                 ^^^^^^^^ help: use the applicable keyword: `Self`
+...
+55 |         expand_wrong_functions!();
+   |         -------------------------- in this macro invocation
+
+error: unnecessary structure name repetition
+  --> $DIR/use_self.rs:35:26
+   |
+35 |             fn test() -> FooWrong {
+   |                          ^^^^^^^^ help: use the applicable keyword: `Self`
+...
+55 |         expand_wrong_functions!();
+   |         -------------------------- in this macro invocation
+
+error: unnecessary structure name repetition
+  --> $DIR/use_self.rs:36:17
+   |
+36 |                 FooWrong::new()
+   |                 ^^^^^^^^^^^^^ help: use the applicable keyword: `Self`
+...
+55 |         expand_wrong_functions!();
+   |         -------------------------- in this macro invocation
+
