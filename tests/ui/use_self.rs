@@ -3,7 +3,10 @@
 #![warn(use_self)]
 #![allow(dead_code)]
 #![allow(should_implement_trait)]
+#![allow(plugin_as_library)]
 
+#[macro_use]
+extern crate clippy_mini_macro_test;
 
 fn main() {}
 
@@ -62,6 +65,14 @@ mod internal_macro_fails {
     }
 }
 
+mod external_macro_not_linted {
+    struct FooWrong {}
+
+    impl FooWrong {
+        use_self_expand_wrong_functions!();
+    }
+}
+
 mod better {
     struct Foo {}
 
@@ -81,24 +92,27 @@ mod better {
     }
 }
 
-//todo the lint does not handle lifetimed struct
-//the following module should trigger the lint on the third method only
+// todo the lint does not handle lifetimed struct
+// the following module should trigger the lint on the third method only
 mod lifetimes {
-    struct Foo<'a>{foo_str: &'a str}
+    struct Foo<'a> {
+        foo_str: &'a str,
+    }
 
     impl<'a> Foo<'a> {
-        // Cannot use `Self` as return type, because the function is actually `fn foo<'b>(s: &'b str) -> Foo<'b>`
+        // Cannot use `Self` as return type, because the function is actually `fn foo<'b>(s: &'b str) ->
+        // Foo<'b>`
         fn foo(s: &str) -> Foo {
             Foo { foo_str: s }
         }
         // cannot replace with `Self`, because that's `Foo<'a>`
         fn bar() -> Foo<'static> {
-            Foo { foo_str: "foo"}
+            Foo { foo_str: "foo" }
         }
 
         // `Self` is applicable here
         fn clone(&self) -> Foo<'a> {
-            Foo {foo_str: self.foo_str}
+            Foo { foo_str: self.foo_str }
         }
     }
 }

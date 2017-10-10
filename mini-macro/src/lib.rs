@@ -19,3 +19,15 @@ fn expand_macro(cx: &mut ExtCtxt, sp: Span, _: &[TokenTree]) -> Box<MacResult + 
 pub fn plugin_registrar(reg: &mut Registry) {
     reg.register_macro("mini_macro", expand_macro);
 }
+
+#[macro_export]
+macro_rules! use_self_expand_wrong_functions{
+    () => (
+        fn new() -> FooWrong {
+            FooWrong {}
+        }
+        fn test() -> FooWrong {
+            FooWrong::new()
+        }
+    )
+}
